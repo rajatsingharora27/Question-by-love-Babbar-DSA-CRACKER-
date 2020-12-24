@@ -1,0 +1,188 @@
+package dynamic_programming;
+
+public class Coin_change {
+	//BUTTOM UP  APPROACH
+
+	//When Duplicates  are allowed 
+	public static void countNotDuplicatePrint(int arr[],int n,int m) {
+		System.out.println("Duplicate Not allowed Buttom Down");
+		countNotDuplicatePrint(arr, n, m,0,"");
+	}
+
+	private static void countNotDuplicatePrint(int arr[], int n, int m,int i, String rsf) {
+		if(n==0) {
+			System.out.println(rsf);
+		}
+		if(n<0 ||i==m ) {
+			return;
+		}
+
+
+
+
+		//countNotDuplicatePrint(arr,n- arr[i]*k, m, i+1,rsf+part);
+		countNotDuplicatePrint(arr, n-arr[i], m, i+1,rsf+arr[i]+"-");
+		countNotDuplicatePrint(arr, n, m, i+1,rsf);
+
+	}
+
+
+	// when duplicates are not allowed
+
+	public static void countDuplicate(int arr[],int n,int m) {
+		System.out.println("Duplicate allowed Buttom up");
+		countDuplicate(arr,n,m,0,"");
+	}
+
+
+	private static void countDuplicate(int[] arr, int n, int m, int i, String rsf )  
+	{
+		if(n==0) {
+			System.out.println(rsf);
+		}
+		if(n<0 ||i==m ) {
+			return;
+		}
+		for(int k=1;k<=n/arr[i];k++) {
+
+			String part="";
+			for(int j=0;j<k;j++) {
+				part+=arr[i]+"-";
+			}
+
+			countNotDuplicatePrint(arr,n- arr[i]*k, m, i+1,rsf+part);
+		}
+
+		//countNotDuplicatePrint(arr, n-arr[i], m, i,rsf+arr[i]+"-");
+		countNotDuplicatePrint(arr, n, m, i+1,rsf);				
+	}
+
+
+
+
+
+
+
+
+	//TOP DOWN APPROACH
+	//recursion when duplicate not allowed
+	public static int countNotDuplicate(int arr[],int n, int m) {
+		System.out.println("Duplicate Not allowed Top up");
+		return countNotDuplicate(arr, n, m,0);
+	}
+
+
+	private static int countNotDuplicate(int[] arr, int n, int m, int i) {
+		// TODO Auto-generated method stub
+		if(n==0) {
+			return 1;
+		}
+		if(i==m || n<0) {
+			return 0;
+		}
+
+		int op1= countNotDuplicate(arr,n-arr[i] ,m, i+1);
+		int op2= countNotDuplicate(arr,n ,m, i+1);
+
+		return op1+op2;
+	}
+
+
+	//This is using recursion
+	// when duplicate coins can be taken
+	public static int count(int arr[],int n,int m) {
+		System.out.println("Duplicate allowed Top Down");
+		return count(arr,n,m,0);
+	}	
+	private static int count(int[] arr, int n, int m, int i) {
+		if(n==0) {
+			return 1;
+		}
+
+		if(n<0|| i==arr.length) {
+			return 0;
+		}
+
+		int op1=count(arr,n-arr[i],m,i);
+		int op2=count(arr,n,m,i+1);
+
+		return op1+op2;
+
+	}
+
+
+
+
+
+
+
+	//USING DP AND MEMOIZATION
+	//using duplicates
+
+	public static int coinChangeDP(int arr[],int value,int m) {
+		System.out.println("Using DP");
+		int r=arr.length;
+		int c=value;
+		int storage[][]=new int [r+1][value+1];
+
+		for(int i=0;i<=c;i++) {
+			storage[0][i]=0;
+		}
+
+		for(int i=1;i<=r;i++) {
+			storage[i][0]=1;
+		}
+
+		for(int i=1;i<=r;i++) {
+			for(int j=1;j<=c;j++) {
+				if(j-arr[i-1]>=0) {
+					int op1=storage[i][j-arr[i-1]];
+					int op2=storage[i-1][j];
+					storage[i][j]=op1+op2;
+				}
+				else {
+					storage[i][j]=storage[i-1][j];
+				}
+			}
+		}
+		
+		return storage[r][c];
+
+
+
+	}
+
+
+
+
+	public static void main(String[] args) {
+		int arr[]= {2,3,5,6,7};
+		int n=12;
+		int m=arr.length;
+
+
+		//Using Recursion
+		countNotDuplicatePrint(arr,n,m);
+		countDuplicate(arr,n,m);
+		System.out.println(countNotDuplicate(arr,n,m));
+		System.out.println(count(arr,n,m));
+
+		//Using Dp and memoization
+		System.out.println(coinChangeDP(arr,n,m));
+
+
+
+
+
+
+
+
+
+
+
+
+
+	}
+
+
+}
