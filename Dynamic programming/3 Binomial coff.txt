@@ -1,0 +1,68 @@
+package dynamic_programming;
+
+public class BinomialCoff {
+	static int mod=(int )Math.pow(10, 9)+7;
+	
+	public static int nCrREC(int n,int r) {
+		
+		if(n==r || r==0) {
+			return 1; 
+		}
+		if(n<r) {
+			return 0;
+		}
+		
+		int op1=nCrREC(n-1,r-1);
+		int op2=nCrREC(n-1,r);
+		return (op1+op2)%mod;
+		
+	}
+	
+	public static int nCrDP2(int n,int r) {
+		int storage[][]=new int[n+1][r+1];
+		
+		for(int i=0;i<=r;i++) {
+			storage[0][i]=0;
+		}
+		
+		for(int i=1;i<=n;i++) {
+			storage[i][0]=1;
+		}
+		
+		
+		for (int i=1;i<=n;i++) {
+			for (int j=1;j<=r;j++) {
+				
+				
+				if(j>i) {
+					storage[i][j]=0;
+				}
+				
+				else if(i==j) {
+					storage[i][j]=1;
+				}
+				
+				else {
+					storage[i][j]=(storage[i-1][j-1]+storage[i-1][j])%mod;
+				}
+			}
+		}
+		
+		return storage[n][r];
+		
+	}
+	
+	
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		int n=30;
+		int r=15;
+		//System.out.println(nCrDP(n,r));
+		//System.out.println(nCr(n,r));
+		System.out.println(nCrREC(n,r));
+		System.out.println(nCrDP2(n,r));
+
+	}
+
+}
