@@ -1,0 +1,127 @@
+package graphs;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+
+
+
+
+public class BFS_implimentation {
+
+	private static ArrayList<ArrayList<Integer>> adjList() {
+		Scanner sc=new Scanner(System.in);
+		ArrayList<ArrayList<Integer>>array=new ArrayList<>();
+
+		System.out.println("Enter the no of vertex and edge");
+		int v=sc.nextInt();
+		int e=sc.nextInt();
+
+		for(int i=0;i<v;i++) {
+			ArrayList<Integer>innerList=new ArrayList<>();
+			array.add(i,innerList);
+		}
+
+		for(int i=0;i<e;i++) {
+			int fv=sc.nextInt();
+			int sv=sc.nextInt();
+			array.get(fv).add(sv);
+		}
+
+
+		for(int i=0;i<v;i++) {
+			System.out.println(i+"==>"+array.get(i));
+		}
+		return array;
+
+	}
+
+	private static void bfsAdjList(ArrayList<ArrayList<Integer>>graph){
+		int n =graph.size();
+		boolean visited[]=new boolean[n];
+		bfsAdjList(graph, 0,visited);
+
+	}
+
+
+	private static void bfsAdjList(ArrayList<ArrayList<Integer>> graph, int sv, boolean[] visited) {
+		Queue<Integer> q=new LinkedList<>();
+		ArrayList<Integer>ans=new ArrayList<>();
+		q.add(sv);
+		visited[sv]=true;
+		while(!q.isEmpty()) {
+			int s=q.poll();
+			ArrayList<Integer> start=graph.get(s);
+			//System.out.println(s);
+			ans.add(s);
+			for(int i=0;i<start.size();i++) {
+				if(!visited[i] && start.get(i)==1) {
+					System.out.println(start.get(i));
+					q.add(start.get(i));
+					visited[i]=true;
+				}
+			}
+		}
+
+	}
+
+	private static int[][] buildGraphMatrix() {
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter number of vertex and number of edges");
+		int v=sc.nextInt();
+		int e=sc.nextInt();
+		int graph[][]=new int[v][v];
+		for(int i=0;i<e;i++) {
+			System.out.println("Enter the edge");
+			int fv=sc.nextInt();
+			int sv=sc.nextInt();
+			graph[fv][sv]=1;
+			//graph[sv][fv]=1;
+		}
+		return graph;
+	}
+
+	private static void BFS(int graph[][]) {
+		int n=graph.length;
+		boolean visited[]=new boolean[n];
+		for(int i=0;i<graph.length;i++) {
+			if(!visited[i])
+				BFS(graph,i,visited);	
+		}
+
+
+	}
+
+	private static void BFS(int[][] graph, int sv, boolean[] visited) {
+		Queue<Integer> q=new LinkedList<>();
+		visited[sv]=true;
+		int n=graph.length;
+		q.add(sv);
+		while(!q.isEmpty()) {
+			int s=q.poll();
+			System.out.println(s);
+			for(int i=s;i<n;i++) {
+				if(!visited[i]&& graph[s][i]==1) {
+					q.add(i);
+					visited[i]=true;
+				}
+			}
+		}
+
+
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		//int graph[][]=buildGraphMatrix();
+		//BFS(graph);
+
+		ArrayList<ArrayList<Integer>>graph=adjList();
+		bfsAdjList(graph);
+		
+
+	}
+
+}

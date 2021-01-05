@@ -1,0 +1,121 @@
+package graphs;
+
+
+import java.util.LinkedList;
+import java.util.Queue;
+
+
+
+//class coordinates{
+//	
+//	int first;
+//	int second;
+//	public coordinates(int first,int second) {
+//		// TODO Auto-generated constructor stub
+//		this.first=first;
+//		this.second=second;
+//	}
+//}
+
+
+
+public class FloodFill {
+
+	public static int[][] floodFill(int img[][],int sr,int sc,int newColor) {
+		int rowNo=img.length;
+		int colNo=img[0].length;
+		boolean isVisited[][]=new boolean[rowNo+1][colNo+1];
+		Queue<coordinates>q=new LinkedList<>();
+		coordinates c=new coordinates(sr,sc);
+		q.add(c);
+		
+		
+		
+		isVisited[sr][sc]=true;
+		int prev=img[sr][sc];
+		img[sr][sc]=newColor;
+		
+		int dx[]= {-1,0,1,0};
+		int dy[]= {0,1,0,-1};
+
+		while(!q.isEmpty()) {
+			coordinates curPtr=q.poll();
+
+			for(int i=0;i<4;i++) {
+
+				if(isValid(curPtr.first+dx[i],curPtr.second+dy[i],rowNo,colNo) &&  !isVisited[curPtr.first+dx[i]][curPtr.second+dy[i]]) {
+					
+					if(img[curPtr.first+dx[i]][curPtr.second+dy[i]]== prev) {
+						
+						q.add(new coordinates(curPtr.first+dx[i],curPtr.second+dy[i]));
+						
+						
+						
+						isVisited[curPtr.first+dx[i]][curPtr.second+dy[i]]=true;
+
+						img[curPtr.first+dx[i]][curPtr.second+dy[i]]=newColor;
+					}
+				}
+			}
+		}
+
+		return img;	
+	}
+
+
+	private static boolean isValid(int x, int y, int rowNo,int colNo) {
+		if(x<0||y<0||x>=rowNo||y>=colNo) {
+			return false;
+		}
+		return true;
+
+	}
+
+
+	public static int[][] floodFillDFS(int img[][],int sr,int sc,int newColor) {
+		
+		boolean visited[][]=new boolean[img.length+1][img[0].length+1];
+		floodFillDFS(img,sr,sc,newColor,visited);
+		
+		return img;
+	}
+	
+	
+	
+	public static void floodFillDFS(int img[][],int sr,int sc,int newColor,boolean visited[][]) {
+		
+		if(sr<0||sc<0||sr<=img.length||sc>=img[0].length|| visited[sr][sc]==true||img[sr][sc]!=newColor) {
+			return ;
+		}
+		
+		visited[sr][sc]=true;
+		img[sr][sc]=newColor;
+		
+		floodFillDFS(img, sr-1, sc, newColor,visited);
+		floodFillDFS(img, sr, sc+1, newColor,visited);
+		floodFillDFS(img, sr+1, sc, newColor,visited);
+		floodFillDFS(img, sr, sc-1, newColor,visited);
+		//return img;
+	}
+	
+	
+
+	public static void main(String[] args) {
+
+		int image[][]= {{1,2,1,1},{2,1,1,2},{1,0,1,0}};
+		int sr=1;
+		int sc=2;
+		int newColor=3;
+		//floodFill(image,sr,sc,newColor);
+		image=floodFillDFS(image,sr,sc,newColor);
+		for(int i=0;i<image.length;i++) {
+			for(int j=0;j<image[0].length;j++) {
+				System.out.print(image[i][j]+" ");
+			}
+			System.out.println();
+		}
+
+
+	}
+
+}

@@ -1,0 +1,96 @@
+package graphs;
+
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class DFS_Implimentation {
+
+
+
+	private static void  adjList(){
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter number of vertex");
+		int v=sc.nextInt();
+		LinkedList<Integer> vertexLL[]=new LinkedList[v];
+		for(int i=0;i<v;i++) {
+			System.out.println("Enter number of edge from "+i );
+			int e=sc.nextInt();
+			int count=0;
+			vertexLL[i]=new LinkedList<>();
+			while(count!=e) {
+				vertexLL[i].add(1);
+				count++;
+			}
+
+		}
+
+		for(int i=0;i<v;i++) {
+			System.out.println(i+"==>"+vertexLL[i]);
+		}	
+	}
+
+
+
+	private static int[][] buildGraphMatrix() {
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter number of vertex and number of edges");
+		int v=sc.nextInt();
+		int e=sc.nextInt();
+		int graph[][]=new int[v][v];
+		for(int i=0;i<e;i++) {
+			System.out.println("Enter the edge");
+			int fv=sc.nextInt();
+			int sv=sc.nextInt();
+			graph[fv][sv]=1;
+			graph[sv][fv]=1;
+		}
+		return graph;
+	}
+
+	private static void dfs(int graph[][]) {
+		boolean visited[]=new boolean [graph.length];
+
+
+		for(int i=0;i<graph.length;i++) {
+			if(!visited[i]) {
+				dfs(graph,i,visited);
+			}
+		}
+
+
+
+	}
+
+
+	private static void dfs(int[][] graph, int sv, boolean[] visited) {
+		System.out.println(sv);
+		visited[sv]=true;
+		int n=graph.length;
+		for(int i=0;i<n;i++) {
+			if(!visited[i]&& graph[sv][i]==1) {
+				dfs(graph,i,visited);
+			}
+		}
+
+	}
+
+
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		int graph[][]=buildGraphMatrix();
+		dfs(graph);
+		//adjList();
+
+
+
+
+
+
+
+
+	}
+
+
+
+}

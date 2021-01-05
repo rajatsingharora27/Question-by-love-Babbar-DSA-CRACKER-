@@ -1,0 +1,86 @@
+package graphs;
+
+import java.util.Scanner;
+
+public class IsCycle {
+
+	public static int[][] buildGraphMatrix() {
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter number of vertex and number of edges");
+		int v=sc.nextInt();
+		int e=sc.nextInt();
+		int graph[][]=new int[v][v];
+		for(int i=0;i<e;i++) {
+			System.out.println("Enter the edge");
+			int fv=sc.nextInt();
+			int sv=sc.nextInt();
+			graph[fv][sv]=1;
+			//graph[sv][fv]=1;
+		}
+		return graph;
+	}
+	
+	public static void isCycle(int graph[][]) {
+		int n=graph.length;
+		boolean visited[]=new boolean[n];
+		
+		for(int i=0;i<n;i++) {
+			boolean ans=isCycle(graph,i,visited);
+			if(ans==true) {
+				System.out.println("True");
+				return;
+			}
+		}
+		System.out.println("False");
+		
+	}
+	
+	
+	
+	
+	private static boolean isCycle(int[][] graph, int sv, boolean[] visited) {
+		
+		
+		visited[sv]=true;
+		for(int i=0;i<graph.length;i++) {
+			if(!visited[i] && graph[sv][i]==1 ) {
+				boolean ans=isCycleHelper(graph, i, visited);
+				if(ans==true) {
+					return true;
+				}
+				visited[sv]=false;
+			}
+			
+		}
+		return false;
+	}
+
+	private static boolean isCycleHelper(int[][] graph, int sv, boolean[] visited) {
+		if(visited[sv]==true) {
+			return true;
+		}
+		
+		
+		visited[sv]=true;
+		
+		
+		for(int i=0;i<graph.length;i++) {
+			
+			if(graph[sv][i]==1) {
+				boolean ans=isCycleHelper(graph, i, visited);
+				if(ans==true) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		int graph[][]=buildGraphMatrix();
+		isCycle(graph);
+
+	}
+
+}

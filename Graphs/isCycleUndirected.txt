@@ -1,0 +1,87 @@
+package graphs;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class IsCycleUndirected {
+
+	
+	public static void buildAdj(){
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter vertex and edges");
+		int v=sc.nextInt();
+		int e=sc.nextInt();
+		
+		ArrayList<ArrayList<Integer>> adjList=new ArrayList<>();
+		
+		for(int i=0;i<v;i++) {
+			adjList.add(i,new ArrayList<Integer>());
+		}
+		
+		
+		for(int i=0;i<e;i++) {
+			
+			int fv=sc.nextInt();
+			int sv=sc.nextInt();
+			adjList.get(fv).add(sv);
+			adjList.get(sv).add(fv);
+		}
+		for(int i=0;i<v;i++) {
+			System.out.println(adjList.get(i));
+		}
+	}
+	
+	
+	private static int[][] buildGraphMatrix() {
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter number of vertex and number of edges");
+		int v=sc.nextInt();
+		int e=sc.nextInt();
+		int graph[][]=new int[v][v];
+		for(int i=0;i<e;i++) {
+			System.out.println("Enter the edge");
+			int fv=sc.nextInt();
+			int sv=sc.nextInt();
+			graph[fv][sv]=1;
+			graph[sv][fv]=1;
+		}
+		return graph;
+	}
+
+	public static boolean isCycle(int graph[][]) {
+		boolean visited[]=new boolean[graph.length];
+		boolean ans=false;
+		for(int i=0;i<graph.length;i++) {
+			if(!visited[i]) {
+				ans= isCycle(graph,visited,i);
+			}
+		}
+		return ans;
+	}
+
+	public static boolean isCycle(int graph[][],boolean visited[],int sv) {
+
+		visited[sv]=true;
+		for(int i=0;i<graph.length;i++) {
+			if(graph[sv][i]==1 && !visited[i]) {
+				graph[i][sv]++;
+				if(isCycle(graph, visited, i)) {
+					return true;
+				}
+			}
+			else if(graph[sv][i]==1 && visited[i]) {
+				return true;
+			}
+		}
+		return false;	
+	}
+
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		//int graph[][]=buildGraphMatrix();
+		//System.out.println(isCycle(graph));
+		buildAdj();
+	}
+
+}

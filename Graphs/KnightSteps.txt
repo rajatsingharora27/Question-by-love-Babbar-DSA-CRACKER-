@@ -1,0 +1,81 @@
+package graphs;
+
+import java.util.LinkedList;
+import java.util.Queue;
+
+class coordinates{
+
+	int first;
+	int second;
+
+	public coordinates(int first,int second) {
+		// TODO Auto-generated constructor stub
+		this.first=first;
+		this.second=second;
+	}
+}
+
+
+
+
+public class StepsByKnight  {
+	
+	
+	
+	
+
+	public static int stepsByKnight(int knightPos[],int targetPos[],int N) {
+
+		int dx[]= {-2,-2,-1,-1,2,2,1,1};
+		int dy[]= {-1,1,-2,2,-1,1,-2,2};
+
+		boolean isVisited[][]=new boolean[N+1][N+1];
+		Queue<coordinates>q=new LinkedList<>();
+		q.add(new coordinates(knightPos[0], knightPos[1]));
+		isVisited[knightPos[0]][knightPos[1]]=true;
+
+		int count=0;
+		while(!q.isEmpty()) {
+			int queLenght=q.size();
+			for(int i=0;i<queLenght;i++) {
+				coordinates curPos=q.poll();
+				if(curPos.first==targetPos[0] && curPos.second==targetPos[1] ) {
+					return count;
+				}
+
+				for(int j=0;j<8;j++) {
+					if(isValid(curPos.first+dx[i],curPos.second+dy[i],N) &&  !isVisited[curPos.first+dx[i]][curPos.second+dy[i]]) {
+						q.add(new coordinates(curPos.first+dx[i], curPos.second+dy[i]));
+						isVisited[curPos.first+dx[i]] [curPos.second+dy[i]]=true;
+					}
+				}
+				count++;	
+			}
+		}
+		return count;
+	}
+
+	private static boolean isValid(int x, int y, int n) {
+		if(x<0||y<0||x>n||y>n ) {
+			return false;
+		}
+		return true;
+		
+		
+		
+		
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		int N = 6; 
+        int knightPos[] = { 4, 5 }; 
+        int targetPos[] = { 1,1 }; 
+        System.out.println( stepsByKnight( knightPos, targetPos, N)); 
+		
+		
+
+	}
+
+}
