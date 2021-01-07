@@ -1,0 +1,173 @@
+package linkedlist;
+
+import java.util.HashMap;
+import java.util.Scanner;
+import java.util.Set;
+
+public class StartPointofLoop {
+
+	public static LinkedListNode<Integer> createLL(){
+
+		Scanner sc=new Scanner(System.in);
+
+		LinkedListNode<Integer>head=null;
+		LinkedListNode<Integer>tail=null;
+
+		System.out.println("Enter number of nodes in LL");
+
+		int n=sc.nextInt();
+
+		for(int i=0;i<n;i++) {
+
+			System.out.println("Enter the data");
+
+			int ele=sc.nextInt();
+
+			if(head==null) {
+
+				head=new LinkedListNode<Integer>(ele);
+
+				tail=head;
+			}
+
+			else {
+
+				LinkedListNode<Integer>newNode=new LinkedListNode<Integer>(ele);
+
+				tail.next=newNode;
+
+				tail=newNode;
+
+
+			}
+
+		}
+
+
+
+		System.out.println("Want to make loop in LL");
+		int ans=sc.nextInt();
+
+		if(ans==1) {
+			System.out.println("loof from which no");
+
+			int x=sc.nextInt();
+
+			LinkedListNode<Integer>cur=head;
+
+			while(cur.data!=x) {
+
+				cur=cur.next;
+			}
+
+			tail.next=cur;
+
+			return head;
+
+		}
+
+
+		return head;
+
+
+	}
+
+	//using hash maps
+	public static int startPoint(LinkedListNode<Integer>head) {
+
+		HashMap<Integer,LinkedListNode<Integer>> map=new HashMap<>();
+
+		LinkedListNode<Integer>cur=head;
+
+		while(cur.next!=null) {
+
+			if(cur.next==null) {
+				return 0;
+			}
+
+			if(!map.containsValue(cur.next)) {
+				map.put(cur.data, cur.next);
+			}
+			else {
+				//cur.next=null;
+				//return 1;
+				Set<Integer>keys=map.keySet();
+
+				for(Integer elem:keys) {
+					if(map.get(elem)==cur.next) {
+						return elem+1;
+					}
+
+				}
+
+			}
+			cur=cur.next;
+		}
+
+		return 0;
+
+	}
+
+	//using floyadWarshal
+	public static int startPoint2(LinkedListNode<Integer>head) {
+		//detect Cycle
+
+		LinkedListNode<Integer>fast=head;
+		LinkedListNode<Integer>slow=head;
+
+		if( head==null|| head.next==null|| head.next.next==null) {
+			return 0;// means no cycle is there
+		}
+		boolean isCycle=false;
+		while(fast.next!=null && slow.next!=null && fast!=null ) {
+
+			fast=fast.next.next;
+			slow=slow.next;
+			if(fast==slow) {
+				isCycle=true;
+				break;
+			}
+		}
+
+		int nodes_in_loop=0;
+		if(isCycle==true) {
+			fast=fast.next;
+			while(fast.next!=slow) {
+				
+				fast=fast.next;
+				nodes_in_loop++;
+			}
+			nodes_in_loop+=2;
+
+			fast=head;
+			slow=head;
+			for(int i=0;i<nodes_in_loop;i++) {
+				fast=fast.next;
+			}
+			//System.out.println(fast.data);
+			//System.out.println(slow.data);
+			while(fast!=slow) {
+				//System.out.println("loop");
+				fast=fast.next;
+				slow=slow.next;
+			}
+
+		}
+		
+		return slow.data;
+
+
+	}
+
+
+
+
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		LinkedListNode<Integer>head=createLL();
+		System.out.println(startPoint2(head));
+
+	}
+
+}

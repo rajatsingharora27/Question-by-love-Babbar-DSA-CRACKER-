@@ -1,0 +1,126 @@
+package linkedlist;
+
+import java.util.Scanner;
+
+import java.util.*;
+
+public class DeleteLoop {
+	
+	public static LinkedListNode<Integer> createLL(){
+
+		Scanner sc=new Scanner(System.in);
+
+		LinkedListNode<Integer>head=null;
+		LinkedListNode<Integer>tail=null;
+
+		System.out.println("Enter number of nodes in LL");
+
+		int n=sc.nextInt();
+
+		for(int i=0;i<n;i++) {
+
+			System.out.println("Enter the data");
+
+			int ele=sc.nextInt();
+
+			if(head==null) {
+
+				head=new LinkedListNode<Integer>(ele);
+
+				tail=head;
+			}
+			
+			else {
+				
+				LinkedListNode<Integer>newNode=new LinkedListNode<Integer>(ele);
+				
+				tail.next=newNode;
+				
+				tail=newNode;
+				
+				
+			}
+
+		}
+		
+		
+		
+		System.out.println("Want to make loop in LL");
+		int ans=sc.nextInt();
+		
+		if(ans==1) {
+			System.out.println("loof from which no");
+			
+			int x=sc.nextInt();
+			
+			LinkedListNode<Integer>cur=head;
+			
+			while(cur.data!=x) {
+				
+				cur=cur.next;
+			}
+			
+			tail.next=cur;
+			
+			return head;
+			
+		}
+	
+		
+		return head;
+
+
+	}
+	
+	
+	//delete loop using hash map
+	public static int deleteLoop(LinkedListNode<Integer>head) {
+		
+		HashMap<Integer,LinkedListNode<Integer>> map=new HashMap<>();
+		
+		LinkedListNode<Integer>cur=head;
+		
+		while(cur.next!=null) {
+			
+			if(cur.next==null) {
+				return 0;
+			}
+			
+			if(!map.containsValue(cur.next)) {
+				map.put(cur.data, cur.next);
+			}
+			else {
+				cur.next=null;
+				return 1;
+			}
+			cur=cur.next;
+		}
+		
+		return 0;
+		
+	}
+
+	
+	public static void deleteLoop2(LinkedListNode<Integer>head) {
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	}
+	
+	
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		LinkedListNode<Integer>head=createLL();
+		System.out.println(deleteLoop(head));
+		
+
+	}
+
+}

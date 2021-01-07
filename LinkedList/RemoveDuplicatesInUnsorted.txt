@@ -1,0 +1,102 @@
+package linkedlist;
+
+import java.util.Scanner;
+
+import java.util.*;
+
+public class RemoveDuplicateInUnsortedLL {
+
+	public static LinkedListNode<Integer> createLL(){
+
+		Scanner sc=new Scanner(System.in);
+
+		LinkedListNode<Integer>head=null;
+		LinkedListNode<Integer>tail=null;
+
+		System.out.println("Enter number of nodes in LL");
+
+		int n=sc.nextInt();
+
+		for(int i=0;i<n;i++) {
+
+			System.out.println("Enter the data");
+
+			int ele=sc.nextInt();
+
+			if(head==null) {
+
+				head=new LinkedListNode<Integer>(ele);
+
+				tail=head;
+			}
+
+			else {
+
+				LinkedListNode<Integer>newNode=new LinkedListNode<Integer>(ele);
+
+				tail.next=newNode;
+
+				tail=newNode;
+
+
+			}
+
+		}
+
+		return head;
+
+
+	}
+
+	public static LinkedListNode<Integer> removeDuplicate(LinkedListNode<Integer>head){
+
+		//HashMap<Integer>map=new HashMap<>();
+		HashSet<Integer>map=new HashSet<Integer>();
+		
+		LinkedListNode<Integer> cur=head;
+
+		LinkedListNode<Integer>newHead=null;
+		LinkedListNode<Integer>tail=null;
+
+		while(cur!=null) {
+
+			if(!map.contains(cur.data)) {
+				map.add(cur.data);
+				if(newHead==null) {
+					newHead=new LinkedListNode<Integer>(cur.data);
+					tail=newHead;
+				}else {
+					tail.next=new LinkedListNode<Integer>(cur.data);
+					tail=tail.next;
+				}
+			}
+			cur=cur.next;
+		}
+
+		return newHead;
+
+
+	}
+
+	public static void print(LinkedListNode<Integer>head) {
+
+		LinkedListNode<Integer>cur=head;
+
+		while(cur!=null) {
+			System.out.print(cur.data+" ");
+			cur=cur.next;
+		}
+
+
+	}
+
+
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		LinkedListNode<Integer>head=createLL();
+		print(removeDuplicate(head));
+
+	}
+
+}

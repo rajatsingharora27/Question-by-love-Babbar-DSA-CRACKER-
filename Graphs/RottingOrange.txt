@@ -1,0 +1,103 @@
+package graphs;
+
+import java.util.LinkedList;
+import java.util.Queue;
+
+class OrangeNode{
+
+	int time;
+	int fv;int sv;
+	public OrangeNode(int fv,int sv,int time) {
+		// TODO Auto-generated constructor stub
+		this.time=time;
+		this.fv=fv;
+		this.sv=sv;
+	}
+}
+
+
+
+public class RottenOranges {
+
+	public static int rottenOrange(int graph[][]) {
+		int row=graph.length;
+		int col=graph[0].length;
+
+		Queue<OrangeNode> q=new LinkedList<OrangeNode>();
+		for(int i=0;i<row;i++) {
+
+			for(int j=0;j<col;j++) {
+
+				if (graph[i][j]==2) {
+
+					OrangeNode o=new OrangeNode(i,j,0);
+					q.add(o);
+				}
+
+			}
+
+		}
+		
+		int dx[]= {-1,0,1,0};
+		int dy[]= {0,1,0,-1};
+		
+		
+
+		int t=0;
+		while(!q.isEmpty()) {
+			
+			OrangeNode front=q.poll();
+			
+			t=front.time;
+			
+			for(int i=0;i<4;i++) {
+				
+				if(isValid(front.fv+dx[i],front.sv+dy[i],row,col,graph)) {
+					
+					OrangeNode o=new OrangeNode(front.fv+dx[i], front.sv+dy[i], front.time+1);
+					graph[front.fv+dx[i]][front.sv+dy[i]]=2;
+					
+					q.add(o);
+				}
+				
+			}	
+		}
+		
+		for(int i=0;i<row;i++) {
+			for(int j=0;j<col;j++) {
+				if(graph[i][j]==1) {
+					return -1;
+				}
+			}
+		}
+		
+		return t;
+		
+	}
+
+
+
+
+
+	private static boolean isValid(int x, int y,int row,int col,int graph[][]) {
+		if(x<0 || y<0  || x>=row || y>= col || graph[x][y]!=1 ) {
+			return false;
+		}
+		return true;
+	}
+
+
+
+
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		int graph[][]= {{2,1,0,2},{0,0,1,2},{1,0,0,1}};
+		System.out.println(rottenOrange(graph));
+		
+		
+		
+	}
+
+}

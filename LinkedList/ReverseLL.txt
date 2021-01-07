@@ -1,0 +1,90 @@
+package linkedlist;
+import java.util.*;
+public class ReverseLL {
+
+	public static LinkedListNode<Integer> takeInput(){
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter the size of the LL");
+		int size=sc.nextInt();
+		LinkedListNode<Integer>head=null;
+		LinkedListNode<Integer>tail=null;
+		
+		for(int i=0;i<size;i++) {
+			System.out.println("Enter the data");
+			int ele=sc.nextInt();
+			if(head==null) {
+				head=new LinkedListNode<Integer>(ele);
+				tail=head;
+			}
+			else {
+				LinkedListNode<Integer>newNode=new LinkedListNode<Integer>(ele);
+				tail.next=newNode;
+				tail=tail.next;
+			}
+		}
+		
+		return head;
+	}
+	
+	public static LinkedList<Integer> takeInput2(){
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter the size of LL");
+		int size=sc.nextInt();
+		LinkedList<Integer> head =new LinkedList<>();
+		int count=0;
+		while(count!=size) {
+			System.out.println("Enetr the element");
+			int ele=sc.nextInt();
+			head.add(ele);
+			count++;
+		}
+		return head;
+		
+		
+	}
+	
+	public static void print(LinkedListNode<Integer>head) {
+		
+		LinkedListNode<Integer>tail=head;
+		while(tail!=null) {
+			System.out.print(tail.data+" ");
+			tail=tail.next;
+		}	
+	}
+	
+	public static void print2(LinkedList<Integer>head) {
+		
+		//LinkedList<Integer>tail=head;
+		for(Integer ele:head) {
+			System.out.println(ele+" ");
+		}	
+	}
+	
+	public static LinkedListNode<Integer> reverseRec(LinkedListNode<Integer>head){
+		if( head.next==null|| head==null ) {
+			return head;
+		}
+		
+		LinkedListNode<Integer>temphead=reverseRec(head.next);
+		LinkedListNode<Integer> ptr=head;
+		while(ptr.next!=null) {
+			ptr=ptr.next;
+		}
+		ptr.next=head;
+		head.next=null;
+		head=temphead;
+		return head;
+	
+	}
+	
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		LinkedListNode<Integer> head=takeInput();
+		//print2(head);
+		//LinkedList<Integer> head=takeInput2();
+		print(reverseRec(head));
+		
+	}
+
+}
