@@ -1,0 +1,127 @@
+package linkedlist;
+
+import java.util.Scanner;
+
+public class MergeSort {
+
+	public static LinkedListNode<Integer> takeInput(){
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter the size of the LL");
+		int size=sc.nextInt();
+		LinkedListNode<Integer>head=null;
+		LinkedListNode<Integer>tail=null;
+
+		for(int i=0;i<size;i++) {
+			System.out.println("Enter the data");
+			int ele=sc.nextInt();
+			if(head==null) {
+				head=new LinkedListNode<Integer>(ele);
+				tail=head;
+			}
+			else {
+				LinkedListNode<Integer>newNode=new LinkedListNode<Integer>(ele);
+				tail.next=newNode;
+				tail=tail.next;
+			}
+		}
+
+		return head;
+	}
+
+	public static LinkedListNode<Integer> mid(LinkedListNode<Integer>head){
+
+		LinkedListNode<Integer>ptr=head;
+		LinkedListNode<Integer>cur=head;
+
+		if(ptr==null || ptr.next==null || ptr.next.next==null) {
+			return cur;
+		}
+
+
+
+		while(ptr.next!=null) {
+
+			if(ptr.next==null||ptr.next.next==null) {
+				return cur.next;
+			}
+
+			ptr=ptr.next.next;
+			cur=cur.next;
+		}
+
+		return cur;
+
+	}
+
+
+	public static LinkedListNode<Integer> mergeSort(LinkedListNode<Integer>head){
+		
+		if(head==null || head.next==null) {
+			return head;
+		}
+		
+
+		LinkedListNode<Integer>middle=mid(head);
+
+		LinkedListNode<Integer>nextOfmid=middle.next;
+
+		middle.next=null;
+
+		LinkedListNode<Integer>merge1=mergeSort(head);
+		LinkedListNode<Integer>merge2=mergeSort(nextOfmid);
+		LinkedListNode<Integer> merged=SortedMerge(merge1,merge2);
+		return merged;
+	}
+
+
+
+
+	private static LinkedListNode<Integer> SortedMerge(LinkedListNode<Integer> merge1, LinkedListNode<Integer> merge2) {
+
+		if(merge1==null) {
+			return merge2;
+		}
+
+
+		if(merge2==null) {
+			return merge1;
+		}
+
+		LinkedListNode<Integer>result;
+		
+		if(merge1.data<=merge2.data) {
+			result=merge1;
+			result.next=SortedMerge(merge1.next, merge2);
+		}
+		else {
+			result=merge2;
+			result.next=SortedMerge(merge1, merge2.next);
+		}
+		
+		return result;
+	}
+
+	
+
+
+	public static void print(LinkedListNode<Integer>head) {
+
+		LinkedListNode<Integer>cur=head;
+		while(cur!=null) {
+			System.out.print(cur.data+" ");
+			cur=cur.next;
+		}
+
+	}
+
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		LinkedListNode<Integer>head=takeInput();
+		print(mergeSort(head));
+		
+
+
+	}
+
+}

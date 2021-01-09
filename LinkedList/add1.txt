@@ -1,0 +1,109 @@
+package linkedlist;
+
+import java.util.Scanner;
+
+public class Add1 {
+	public static LinkedListNode<Integer> takeInput(){
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter the size of the LL");
+		int size=sc.nextInt();
+		LinkedListNode<Integer>head=null;
+		LinkedListNode<Integer>tail=null;
+
+		for(int i=0;i<size;i++) {
+			System.out.println("Enter the data");
+			int ele=sc.nextInt();
+			if(head==null) {
+				head=new LinkedListNode<Integer>(ele);
+				tail=head;
+			}
+			else {
+				LinkedListNode<Integer>newNode=new LinkedListNode<Integer>(ele);
+				tail.next=newNode;
+				tail=tail.next;
+			}
+		}
+
+		return head;
+	}
+
+	public static LinkedListNode<Integer> reverse(LinkedListNode<Integer>head){
+
+		if(head.next==null|| head==null) {
+			return head;
+		}
+
+		LinkedListNode<Integer>newHead=reverse(head.next);
+
+		head.next=null;
+
+		LinkedListNode<Integer>newTail=head;
+
+		LinkedListNode<Integer>cur=newHead;
+
+		while(cur.next!=null) {
+			cur=cur.next;
+		}
+
+		cur.next=newTail;
+
+		return newHead;
+
+
+	}
+
+
+	public static LinkedListNode<Integer> addOne(LinkedListNode<Integer>head){
+
+		
+		LinkedListNode<Integer>cur=reverse(head);
+		LinkedListNode<Integer>temp=cur;
+		LinkedListNode<Integer>ptr=null;
+
+		int c=1;
+
+
+		while(cur!=null) {
+			int rem=(cur.data+c)%10;
+
+			c=(cur.data+c)/10;
+
+			cur.data=rem;
+
+			ptr=cur;
+			cur=cur.next;
+
+		}
+
+		if(c!=0) {
+			LinkedListNode<Integer>newNode=new  LinkedListNode<Integer>(c);
+			ptr.next=newNode;
+			ptr=ptr.next;
+		}
+
+		return reverse(temp);
+
+
+	}
+
+	public static void print(LinkedListNode<Integer>head) {
+
+		LinkedListNode<Integer>cur=head;
+		while(cur!=null) {
+			System.out.print(cur.data+" ");
+			cur=cur.next;
+		}
+
+	}
+
+
+
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		LinkedListNode<Integer>head=takeInput();
+		print(addOne(head));
+
+	}
+
+}

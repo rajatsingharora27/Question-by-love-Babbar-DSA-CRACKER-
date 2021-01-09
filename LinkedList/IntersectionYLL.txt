@@ -1,0 +1,111 @@
+package linkedlist;
+
+import java.util.Scanner;
+
+
+class yLL{
+	
+	LinkedListNode<Integer>LLhead;
+	LinkedListNode<Integer>LLtail;
+}
+
+
+
+public class IntersectionPointOfTwoLL {
+	
+	public static LinkedListNode<Integer> takeInput(){
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter the size of the LL");
+		int size=sc.nextInt();
+		LinkedListNode<Integer>head=null;
+		LinkedListNode<Integer>tail=null;
+
+		for(int i=0;i<size;i++) {
+			System.out.println("Enter the data");
+			int ele=sc.nextInt();
+			if(head==null) {
+				head=new LinkedListNode<Integer>(ele);
+				tail=head;
+			}
+			else {
+				LinkedListNode<Integer>newNode=new LinkedListNode<Integer>(ele);
+				tail.next=newNode;
+				tail=tail.next;
+			}
+		}
+
+		return head;
+	}
+
+	public static int intersectdLL(LinkedListNode<Integer>head1,LinkedListNode<Integer>head2){
+		 int len1=length(head1);
+         int len2=length(head2);
+         int ans=-1;
+         LinkedListNode<Integer> cur1=head1;
+         LinkedListNode<Integer> cur2=head2;
+         if(len1>len2){
+             int diff=len1-len2;
+             for(int i=0;i<diff;i++){
+                 cur1=cur1.next;
+             }
+             
+
+         }
+         
+         else{
+             int diff=len2-len1;
+             for(int i=0;i<diff;i++){
+                 cur2=cur2.next;
+             }
+         }
+         
+         while(cur1!=cur2){
+             cur1=cur1.next;
+             cur2=cur2.next;
+         }
+         
+         if(cur1==cur2){
+         ans=cur1.data;
+         return ans;
+         }
+         return ans;
+         
+	}
+	
+	
+	public static int length(LinkedListNode<Integer> head){
+		LinkedListNode<Integer> ptr=head;
+	    int c=0;
+	    while(ptr!=null){
+	        ptr=ptr.next;
+	        c++;
+	    }
+	    return c;
+	    
+	    
+	    
+	}
+	
+	
+	
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+//		LinkedListNode<Integer> list;
+//		 
+//        // creating first linked list
+//        list = new LinkedListNode<Integer>(3);
+//        list.next = new 		LinkedListNode<Integer>(6);
+//        list.next.next = new 		LinkedListNode<Integer>(9);
+//        list.head1.next.next.next = new 		LinkedListNode<Integer>(15);
+//        list.head1.next.next.next.next = new 		LinkedListNode<Integer>(30);
+// 
+//        // creating second linked list
+//        list.head2 = new Node(10);
+//        list.head2.next = new Node(15);
+//        list.head2.next.next = new Node(30);
+// 
+
+	}
+
+}
