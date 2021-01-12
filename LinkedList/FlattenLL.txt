@@ -1,0 +1,232 @@
+package linkedlist;
+
+import java.util.PriorityQueue;
+import java.util.Scanner;
+
+class multiList{
+	
+	int d;
+	multiList next;
+	multiList below;
+	
+	public multiList(int d) {
+		// TODO Auto-generated constructor stub
+		this.d=d;
+		next=null;
+		below=null;
+	}
+
+}
+
+
+public class FlattenLL {
+	
+	
+	public static multiList takeInput() {
+		Scanner sc=new Scanner (System.in);
+		System.out.println("Length of main LL");
+		int mainLen=sc.nextInt();
+		
+		multiList head=null;
+		multiList tail=null;
+		
+		for(int i=0;i<mainLen;i++) {
+			int data=sc.nextInt();
+			if(head==null) {
+				
+				head=new multiList(data);
+				tail=head;
+				
+			}
+			else {
+				multiList newNode=new multiList(data);
+				tail.next=newNode;
+				tail=tail.next;
+			}
+		}
+		
+		System.out.println("For Entering below list");
+		int count=0;
+		
+		multiList curhead=head;
+		
+		while(curhead!=null) {
+			
+			//multiList curhead=belowptr;
+			multiList curtail=null;
+			System.out.println("Enter the lenght of below list for parent"+curhead.d);
+			int n=sc.nextInt();
+			
+			
+			
+			for(int i=0;i<n;i++) {
+				System.out.println("Enter data");
+				int data= sc.nextInt();
+				if(curhead.below==null) {
+					curhead.below=new multiList(data);
+					curtail=curhead.below;
+				}
+				else {
+					multiList newNode=new multiList(data);
+					curtail.below=newNode;
+					curtail=curtail.below;
+				}
+				
+			}
+			
+			curhead=curhead.next;
+			
+		}
+		return head;
+	}
+	
+	public static void print(multiList head) {
+		
+		multiList cur=head;
+		multiList belowptr=cur;
+		
+		while(cur!=null) {
+			
+			while(belowptr!=null) {
+				System.out.print(belowptr.d+" ");
+				belowptr=belowptr.below;
+			}
+			System.out.println();
+			cur=cur.next;
+			belowptr=cur;
+		}
+	}
+	
+	
+	//Using min Heap
+	//time-O(number of nodes)
+	//space -(number of nodes)
+	public static void flattenLL(multiList head) {
+		
+		PriorityQueue<Integer>heap=new PriorityQueue<>();
+		multiList cur=head;
+		multiList belowptr=cur;
+		
+		while(cur!=null) {
+			
+			while(belowptr!=null) {
+				//System.out.print(belowptr.d+" ");
+				heap.add(belowptr.d);
+				belowptr=belowptr.below;
+			}
+			System.out.println();
+			cur=cur.next;
+			belowptr=cur;
+		}
+		
+		multiList finalList=null;
+		multiList tail=null;
+		
+		while(!heap.isEmpty()) {
+			int data=heap.poll();
+			if(finalList==null) {
+				
+				finalList=new multiList(data);
+				tail=finalList;
+
+				
+			}
+			else {
+				
+				multiList newNode= new multiList(data);
+				tail.below=newNode;
+				tail=tail.below;
+			}
+			
+		}
+		
+		
+		System.out.println("List is ");
+		multiList ptr=finalList;
+		while(ptr!=null) {
+			System.out.print(ptr.d+" ");
+			ptr=ptr.below;
+		}
+		
+		
+	}
+	
+	
+	//using mergeSort
+	
+	public static void flattenLLMerge(multiList head) {
+		
+		if(head==null) {
+			return;
+		}
+		
+		multiList ptr=head;
+		multiList cur=ptr.next;
+		multiList list=null;
+		
+		while(cur!=null) {
+			list=merge(ptr,cur);
+			
+			cur=cur.next;
+			
+			list.next=cur;
+			
+			ptr=list;
+			
+		}
+		
+		
+		printMerge(list);
+		
+		
+		
+		
+	}
+	
+	private static multiList merge(multiList ptr, multiList cur) {
+		
+		if(ptr==null) {
+			return cur;
+		}
+		
+		if(cur==null) {
+			return ptr;
+		}
+		
+		
+		if(ptr.d<cur.d) {	
+			ptr.below=merge(ptr.below, cur);
+			return ptr;
+		}
+		else {
+			cur.below=merge(ptr, cur.below);
+			return cur;
+		}
+		
+	}
+	
+	
+	public static void printMerge(multiList head) {
+		
+		multiList cur=head;
+		while(cur!=null) {
+		System.out.print(cur.d+" ");
+		cur=cur.below;
+		}
+		
+	}
+	
+	
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		multiList head=takeInput();
+		//print(head);
+		flattenLLMerge(head);
+		printMerge(head);
+	}
+		
+		
+	}
+
+

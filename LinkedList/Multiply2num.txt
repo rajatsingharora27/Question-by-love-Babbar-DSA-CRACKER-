@@ -1,0 +1,89 @@
+package linkedlist;
+
+import java.util.Scanner;
+
+public class MultiplyLL {
+
+	public static LinkedListNode<Integer> takeInput(){
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter the size of the LL");
+		int size=sc.nextInt();
+		LinkedListNode<Integer>head=null;
+		LinkedListNode<Integer>tail=null;
+
+		for(int i=0;i<size;i++) {
+			System.out.println("Enter the data");
+			int ele=sc.nextInt();
+			if(head==null) {
+				head=new LinkedListNode<Integer>(ele);
+				tail=head;
+			}
+			else {
+				LinkedListNode<Integer>newNode=new LinkedListNode<Integer>(ele);
+				tail.next=newNode;
+				tail=tail.next;
+			}
+		}
+
+		return head;
+	}
+
+	public static LinkedListNode<Integer> reverse(LinkedListNode<Integer>head){
+		if( head.next==null|| head==null ) {
+			return head;
+		}
+		
+		LinkedListNode<Integer>temphead=reverse(head.next);
+		LinkedListNode<Integer> ptr=head;
+		while(ptr.next!=null) {
+			ptr=ptr.next;
+		}
+		ptr.next=head;
+		head.next=null;
+		head=temphead;
+		return head;
+	
+	}
+	
+	
+	public static long multiply(LinkedListNode<Integer>head1,LinkedListNode<Integer>head2){
+		int mod=(int) (Math.pow(10, 9)+7);
+		LinkedListNode<Integer>cur1=head1;
+		LinkedListNode<Integer>cur2=head2;
+		
+		long num1=0;
+		long num2=0;
+		
+		while(cur1!=null || cur2!=null) {
+			
+			if(cur1!=null) {
+				num1=num1*10+cur1.data;
+				num1=num1%mod;
+				cur1=cur1.next;
+			}
+			
+			if(cur2!=null) {
+				num2=num2*10+cur2.data;
+				num2=num2%mod;
+				cur2=cur2.next;
+			}
+		}
+		
+		return (num1*num2)%mod;
+		
+	}
+	
+	
+
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+			
+		LinkedListNode<Integer>head1=takeInput();
+		LinkedListNode<Integer>head2=takeInput();
+
+		System.out.println(multiply(head1, head2));
+		
+	}
+
+}

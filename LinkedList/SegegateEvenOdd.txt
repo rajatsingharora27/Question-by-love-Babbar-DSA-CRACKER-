@@ -1,0 +1,105 @@
+package linkedlist;
+
+import java.util.Scanner;
+
+public class EvenOdd {
+
+
+	public static LinkedListNode<Integer> takeInput(){
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter the size of the LL");
+		int size=sc.nextInt();
+		LinkedListNode<Integer>head=null;
+		LinkedListNode<Integer>tail=null;
+
+		for(int i=0;i<size;i++) {
+			System.out.println("Enter the data");
+			int ele=sc.nextInt();
+			if(head==null) {
+				head=new LinkedListNode<Integer>(ele);
+				tail=head;
+			}
+			else {
+				LinkedListNode<Integer>newNode=new LinkedListNode<Integer>(ele);
+				tail.next=newNode;
+				tail=tail.next;
+			}
+		}
+
+		return head;
+	}
+
+	public static LinkedListNode<Integer> evenodd(LinkedListNode<Integer>head){
+		
+		LinkedListNode<Integer>cur=head;
+		
+		LinkedListNode<Integer>even=null;
+		LinkedListNode<Integer>event=null;
+
+		
+		LinkedListNode<Integer>odd=null;
+		LinkedListNode<Integer>oddt=null;
+
+		
+		while(cur!=null) {
+			if(cur.data%2==0) {
+				
+				if(even==null) {
+					even=new LinkedListNode<Integer>(cur.data);
+					event=even;
+				}
+				else {
+					event.next=new LinkedListNode<Integer>(cur.data);
+					event=event.next;
+				}
+			}
+			else {
+				if(odd==null) {
+					odd=new LinkedListNode<Integer>(cur.data);
+					oddt=odd;
+				}
+				else {
+					oddt.next=new LinkedListNode<Integer>(cur.data);
+					oddt=oddt.next;
+				}
+			}
+			cur=cur.next;
+		}
+		
+		if(even==null) {
+			return odd;
+		}
+		
+		else if(odd==null) {
+			return even;
+		}
+		
+		else {
+			event.next=odd;
+			return even;
+			
+		}	
+		
+	}
+	
+	public static void print(LinkedListNode<Integer>head) {
+
+		LinkedListNode<Integer>tail=head;
+		while(tail!=null) {
+			System.out.print(tail.data+" ");
+			tail=tail.next;
+		}	
+	}
+	
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		LinkedListNode<Integer>head=takeInput();
+		print(evenodd(head));
+		
+		
+
+	}
+
+}
